@@ -167,3 +167,12 @@
         reputation-score: (+ (get reputation-score user-data) quality-score)
       }))
       (ok true))))
+
+;; Get platform statistics
+(define-read-only (get-platform-stats)
+  {
+    total-compute: (var-get total-compute-power),
+    active-jobs: (len (map-get? ModelTrainingJobs)),
+    minimum-stake: (var-get minimum-stake),
+    reward-rate: (var-get reward-rate)
+  })
