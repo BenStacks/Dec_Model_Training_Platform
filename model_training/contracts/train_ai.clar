@@ -68,3 +68,8 @@
   (get contribution-count (default-to 
     {last-contribution: u0, contribution-count: u0}
     (map-get? Contributions user))))
+
+(define-read-only (get-user-total-rewards (user principal))
+  (get total-rewards (default-to 
+    {compute-power: u0, total-rewards: u0, is-active: false, registration-time: u0}
+    (map-get? Users user))))
