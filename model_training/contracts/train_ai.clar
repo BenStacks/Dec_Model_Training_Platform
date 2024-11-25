@@ -62,3 +62,9 @@
       compute-power: (+ (get compute-power current-data) amount)
     }))
     (var-set total-compute-power (+ (var-get total-compute-power) amount))))
+
+;; Get user's contribution count
+(define-read-only (get-contribution-count (user principal))
+  (get contribution-count (default-to 
+    {last-contribution: u0, contribution-count: u0}
+    (map-get? Contributions user))))
