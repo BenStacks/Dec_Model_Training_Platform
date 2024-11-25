@@ -85,3 +85,8 @@
 (define-private (calculate-rewards (amount uint))
   (* amount (var-get reward-rate)))
 
+;; Reward user for contribution
+(define-private (reward-user (user principal) (amount uint))
+  (let ((rewards (calculate-rewards amount)))
+    (update-user-rewards user rewards)
+    rewards))
