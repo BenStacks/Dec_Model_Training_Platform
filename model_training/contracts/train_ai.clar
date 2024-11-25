@@ -18,3 +18,35 @@
 (define-data-var contribution-cooldown uint u144) ;; ~24 hours in blocks
 (define-data-var minimum-stake uint u1000) ;; minimum tokens to stake
 (define-data-var platform-fee-rate uint u5) ;; 0.5% fee
+
+;; Data Maps
+(define-map Users principal 
+  {
+    compute-power: uint,
+    total-rewards: uint,
+    is-active: bool,
+    registration-time: uint,
+    reputation-score: uint,
+    staked-amount: uint
+  }
+)
+
+(define-map Contributions principal 
+  {
+    last-contribution: uint,
+    contribution-count: uint,
+    total-compute-contributed: uint,
+    last-reward-claim: uint
+  }
+)
+
+(define-map ModelTrainingJobs uint 
+  {
+    creator: principal,
+    compute-required: uint,
+    reward-multiplier: uint,
+    participants: (list 50 principal),
+    is-active: bool,
+    created-at: uint
+  }
+)
