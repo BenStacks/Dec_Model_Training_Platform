@@ -169,10 +169,30 @@
       (ok true))))
 
 ;; Get platform statistics
-(define-read-only (get-platform-stats)
-  {
-    total-compute: (var-get total-compute-power),
-    active-jobs: (len (map-get? ModelTrainingJobs)),
-    minimum-stake: (var-get minimum-stake),
-    reward-rate: (var-get reward-rate)
-  })
+;; (define-read-only (get-platform-stats)
+;;   {
+;;     total-compute: (var-get total-compute-power),
+;;     active-jobs: (len (map-get? ModelTrainingJobs)),
+;;     minimum-stake: (var-get minimum-stake),
+;;     reward-rate: (var-get reward-rate)
+;;   })
+
+;; Check if user can contribute (cooldown period)
+(define-read-only (can-contribute (user principal))
+  (let ((last-contribution (get last-contribution 
+         (default-to {last-contribution: u0, contribution-count: u0, 
+                     total-compute-contributed: u0, last-reward-claim: u0}
+         (map-get? Contributions user)))))
+    (>= (- block-height last-contribution) (var-get contribution-cooldown))))
+
+;; Update platform parameters (admin only)
+(define-public (update-platform-params 
+    (new-cooldown uint) 
+    (new-minimum-stake uint)
+    (new-fee-rate uint))
+  (begin
+    (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+    (var-set contribution-cooldown new-cooldown)
+    (var-set minimum-stake new-minimum-stake)
+    (var-set platform-fee-rate new-fee-rate)
+    (ok true)))
