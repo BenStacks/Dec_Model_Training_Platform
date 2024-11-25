@@ -80,3 +80,8 @@
     (map-set Users user (merge current-data {
       total-rewards: (+ (get total-rewards current-data) amount)
     }))))
+
+;; Calculate rewards for contribution
+(define-private (calculate-rewards (amount uint))
+  (* amount (var-get reward-rate)))
+
